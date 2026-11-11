@@ -53,8 +53,8 @@ public_users.get('/title/:title',function (req, res) {
 public_users.get('/review/:isbn',function (req, res) {
   //Write your code here
   const isbn = req.params.isbn;
-  let filtered_books = books.filter((book) => book.isbn === isbn);
-  res.send(books[isbn]);
+  let review = books.filter((book) => books.isbn === isbn);
+  res.send(books[review]);
 });
 
 module.exports.general = public_users;
