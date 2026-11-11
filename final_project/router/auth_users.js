@@ -7,11 +7,20 @@ let users = [];
 
 const isValid = (username)=>{ //returns boolean
 //write code to check is the username is valid
-}
+let userswithsamename = users.filter((user) => {
+    return user.username === username;
+  });
+  return userswithsamename.length > 0;
+};
 
 const authenticatedUser = (username,password)=>{ //returns boolean
 //write code to check if username and password match the one we have in records.
-
+  let validusers = users.filter((user) => {
+    return user.username === username && user.password === password;
+  });
+  return validusers.length > 0;
+};
+    
 // Middleware to authenticate requests to "/customer/login" endpoint
 app.use("/customer", function auth(req, res, next) {
     // Check if user is logged in and has valid access token
@@ -38,15 +47,62 @@ app.use("/customer", function auth(req, res, next) {
 //only registered users can login
 regd_users.post("/login", (req,res) => {
   //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
+    const username = req.body.username;
+    const password = req.body.password;
+
+    // Check if username or password is missing
+    if (!username || !password) {
+        return res.status(404).json({ message: "Error logging in" });
+    }
+
+    return res.status(300).json({message: "Yet to be implemented"});
 });
 
 // Add a book review
 regd_users.put("/auth/review/:isbn", (req, res) => {
-  //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
+    // Extract email parameter from request URL
+    const email = req.params.email;
+    let friend = friends[email];  // Retrieve friend object associated with email
+
+    if (friend) {  // Check if friend exists
+        let DOB = req.body.DOB;
+        // Add similarly for firstName
+        // Add similarly for lastName
+
+        // Update DOB if provided in request body
+        if (DOB) {
+            friend["DOB"] = DOB;
+        }
+        // Add similarly for firstName
+        // Add similarly for lastName
+
+        friends[email] = friend;  // Update friend details in 'friends' object
+        res.send(`Friend with the email ${email} updated.`);
+    } else {
+        // Respond if friend with specified email is not found
+        res.send("Unable to find friend!");
+    }
 });
 
+    
+});
+
+regd_users.delete("/auth/review/:isbn", (req, res) => {
+    // Extract isbs parameter from request URL
+    const isbn = req.params.isbn;
+
+    if (isbn) {
+        // Delete book from 'books' object based on provided isbn
+        delete books[isbn;
+    }
+    
+    // Send response confirming deletion of book review
+    res.send(`Book review with the ISBN ${isbn} deleted.`);
+});
+
+    
+  return res.status(300).json({message: "Yet to be implemented"});
+});
 module.exports.authenticated = regd_users;
 module.exports.isValid = isValid;
 module.exports.users = users;
