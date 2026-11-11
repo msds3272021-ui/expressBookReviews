@@ -19,7 +19,6 @@ public_users.post("/register", (req,res) => {
     }
   }
   return res.status(404).json({ message: "Unable to register user." });
-  return res.status(300).json({message: "Yet to be implemented"});
 });
 
 // Get the book list available in the shop
