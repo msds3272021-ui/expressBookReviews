@@ -22,7 +22,7 @@ const authenticatedUser = (username,password)=>{ //returns boolean
 };
     
 // Middleware to authenticate requests to "/customer/login" endpoint
-app.use("/customer", function auth(req, res, next) {
+app.use("/customer/login", function auth(req, res, next) {
     // Check if user is logged in and has valid access token
     if (req.session.authorization) {
         let token = req.session.authorization['accessToken'];
@@ -60,8 +60,8 @@ regd_users.post("/login", (req,res) => {
 
 // Add a book review
 regd_users.put("/auth/review/:isbn", (req, res) => {
-    // Extract email parameter from request URL
-    const email = req.params.email;
+    // Extract isbn parameter from request URL
+    const isbn = req.params.isbn;
     let friend = friends[email];  // Retrieve friend object associated with email
 
     if (friend) {  // Check if friend exists
@@ -76,33 +76,27 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
         // Add similarly for firstName
         // Add similarly for lastName
 
-        friends[email] = friend;  // Update friend details in 'friends' object
-        res.send(`Friend with the email ${email} updated.`);
+        books[email] = friend;  // Update book details in 'bookss' object
+        res.send(`Book review with the isbn ${isbn} updated.`);
     } else {
         // Respond if friend with specified email is not found
-        res.send("Unable to find friend!");
+        res.send("Unable to find book!");
     }
 });
-
     
-});
-
 regd_users.delete("/auth/review/:isbn", (req, res) => {
-    // Extract isbs parameter from request URL
+    // Extract isbn parameter from request URL
     const isbn = req.params.isbn;
 
     if (isbn) {
         // Delete book from 'books' object based on provided isbn
-        delete books[isbn;
+        delete books[isbn];
     }
-    
+ 
     // Send response confirming deletion of book review
     res.send(`Book review with the ISBN ${isbn} deleted.`);
 });
 
-    
-  return res.status(300).json({message: "Yet to be implemented"});
-});
 module.exports.authenticated = regd_users;
 module.exports.isValid = isValid;
 module.exports.users = users;
