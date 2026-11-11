@@ -62,7 +62,7 @@ regd_users.post("/login", (req,res) => {
 regd_users.put("/auth/review/:isbn", (req, res) => {
     // Extract isbn parameter from request URL
     const isbn = req.params.isbn;
-    let friend = friends[email];  // Retrieve friend object associated with email
+    let book = books[isbn];  // Retrieve book object associated with isbn
 
     if (friend) {  // Check if friend exists
         let DOB = req.body.DOB;
@@ -73,13 +73,11 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
         if (DOB) {
             friend["DOB"] = DOB;
         }
-        // Add similarly for firstName
-        // Add similarly for lastName
-
-        books[email] = friend;  // Update book details in 'bookss' object
+      
+        books[isbn = book;  // Update book details in 'books' object
         res.send(`Book review with the isbn ${isbn} updated.`);
     } else {
-        // Respond if friend with specified email is not found
+        // Respond if book with specified isbn  is not found
         res.send("Unable to find book!");
     }
 });
