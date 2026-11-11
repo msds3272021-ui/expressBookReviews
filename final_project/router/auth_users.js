@@ -54,45 +54,35 @@ regd_users.post("/login", (req,res) => {
     if (!username || !password) {
         return res.status(404).json({ message: "Error logging in" });
     }
-
-    return res.status(300).json({message: "Yet to be implemented"});
 });
 
 // Add a book review
 regd_users.put("/auth/review/:isbn", (req, res) => {
     // Extract isbn parameter from request URL
     const isbn = req.params.isbn;
-    let book = books[isbn];  // Retrieve book object associated with isbn
-
-    if (friend) {  // Check if friend exists
-        let DOB = req.body.DOB;
-        // Add similarly for firstName
-        // Add similarly for lastName
-
-        // Update DOB if provided in request body
-        if (DOB) {
-            friend["DOB"] = DOB;
-        }
-      
-        books[isbn = book;  // Update book details in 'books' object
-        res.send(`Book review with the isbn ${isbn} updated.`);
-    } else {
-        // Respond if book with specified isbn  is not found
-        res.send("Unable to find book!");
-    }
+    const { review } = req.body;
+    const existingReview = reviews.find(review => review.isbn === isbn);
+  
+  if (existingReview) {
+    existingReview.review = review; // Modify existing review
+    res.send('Existing review has been modified');
+  } else {
+    reviews.push({ isbn, review }); // Add new review
+    res.send('New review has been added');
+  }
 });
-    
+      
 regd_users.delete("/auth/review/:isbn", (req, res) => {
     // Extract isbn parameter from request URL
     const isbn = req.params.isbn;
+    const { username } = req.body;
+    const reviewIndex = reviews.findIndex(review => review.isbn === isbn && review.username === username);
 
-    if (isbn) {
-        // Delete book from 'books' object based on provided isbn
-        delete books[isbn];
-    }
- 
-    // Send response confirming deletion of book review
-    res.send(`Book review with the ISBN ${isbn} deleted.`);
+    if (reviewIndex !== -1) {
+        reviews.splice(reviewIndex, 1);
+        res.send(`Book review with the isbn ${isbn} deleted.`);
+    } else {
+    res.status(404).send('Book review not found'); 
 });
 
 module.exports.authenticated = regd_users;
