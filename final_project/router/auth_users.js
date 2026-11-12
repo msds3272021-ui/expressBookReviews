@@ -76,7 +76,16 @@ router.post("/login", function (req, res) {
     accessToken: accessToken
   });
 });
-// Add a book review
+
+// Add a book review only is review was initially done by same username
+//The important change is this condition:
+//review.isbn === isbn && review.username === username
+//This ensures that:
+//The same user updating the same ISBN modifies their existing review.
+//A different user reviewing the same ISBN gets a separate review.
+//The username is taken from the authenticated user, rather than trusting a username sent in the request body.
+//     constant username= req.user.username,  instead of req.user.body
+
 regd_users.put("/auth/review/:isbn", (req, res) => {
   const isbn = req.params.isbn;
   const reviewText = req.body.review;
