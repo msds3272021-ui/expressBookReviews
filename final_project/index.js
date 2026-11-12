@@ -8,6 +8,7 @@ const app = express();
 
 app.use(express.json());
 
+// Middleware to authenticate requests to "/customer/login" endpoint
 //index.js should contain the authentication middleware that verifies the token
 //It checks whether a session contains an access token, verifies the JWT, and allows the request to continue only when the token is valid.
 //The authentication flow is:
