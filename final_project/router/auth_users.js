@@ -83,33 +83,52 @@ router.post("/login", function (req, res) {
 });
 // Add a book review
 regd_users.put("/auth/review/:isbn", (req, res) => {
-    // Extract isbn parameter from request URL
-    const isbn = req.params.isbn;
-    const { review } = req.body;
-    const existingReview = reviews.find(review => review.isbn === isbn);
-  
+  const isbn = req.params.isbn;
+  const reviewText = req.body.review;
+
+  // The username should come from the authenticated session/token
+  const username = req.user.username;
+
+  const existingReview = reviews.find(
+    (review) =>
+      review.isbn === isbn &&
+      review.username === username
+  );
+
   if (existingReview) {
-    existingReview.review = review; // Modify existing review
-    res.send('Existing review has been modified');
-  } else {
-    reviews.push({ isbn, review }); // Add new review
-    res.send('New review has been added');
+    existingReview.review = reviewText;
+
+    return res.send("Existing review has been modified");
   }
+
+  reviews.push({
+    isbn: isbn,
+    username: username,
+    review: reviewText
+  });
+
+  res.send("New review has been added");
+});
+
+regd_users.delete("/auth/review/:isbn", (req, res) => {
+  const isbn = req.params.isbn;
+  const username = req.user.username;
+
+  const reviewIndex = reviews.findIndex(
+    (review) =>
+      review.isbn === isbn &&
+      review.username === username
+  );
+
+  if (reviewIndex !== -1) {
+    reviews.splice(reviewIndex, 1);
+
+    return res.send(`Book review with the isbn ${isbn} deleted.`);
+  }
+
+  return res.status(404).send("Book review not found");
 });
       
-regd_users.delete("/auth/review/:isbn", (req, res) => {
-    // Extract isbn parameter from request URL
-    const isbn = req.params.isbn;
-    const { username } = req.body;
-    const reviewIndex = reviews.findIndex(review => review.isbn === isbn && review.username === username);
-
-    if (reviewIndex !== -1) {
-        reviews.splice(reviewIndex, 1);
-        res.send(`Book review with the isbn ${isbn} deleted.`);
-    } else {
-    res.status(404).send('Book review not found'); 
-});
-
 module.exports.authenticated = regd_users;
 module.exports.isValid = isValid;
 module.exports.users = users;
