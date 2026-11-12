@@ -7,6 +7,7 @@ const genl_routes = require('./router/general.js').general;
 const app = express();
 
 app.use(express.json());
+app.use("/customer",session({secret:"fingerprint_customer",resave: true, saveUninitialized: true}))
 
 // Middleware to authenticate requests to "/customer/login" endpoint
 //index.js should contain the authentication middleware that verifies the token
@@ -45,8 +46,6 @@ app.use("/customer/auth/*", function auth(req, res, next) {
 
 
 const PORT =5000;
-
-app.use("/customer",session({secret:"fingerprint_customer",resave: true, saveUninitialized: true}))
 
 app.use("/customer", customer_routes);
 app.use("/", genl_routes);
