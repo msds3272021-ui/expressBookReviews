@@ -8,6 +8,16 @@ const app = express();
 
 app.use(express.json());
 
+//index.js should contain the authentication middleware that verifies the token
+//It checks whether a session contains an access token, verifies the JWT, and allows the request to continue only when the token is valid.
+//The authentication flow is:
+
+//The user logs in.
+//The access token is stored in req.session.authorization.accessToken.
+//This middleware retrieves the token.
+//jwt.verify() validates it.
+//next() allows the authenticated route to run.
+
 app.use("/customer/auth/*", function auth(req, res, next) {
   // Check whether the user has a session authorization object
   if (!req.session.authorization) {
