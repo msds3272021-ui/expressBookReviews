@@ -38,7 +38,7 @@ const authenticatedUser = (username, password) => {
 //jwt.verify(token, "access", callback);  - in index.js
 //So, create the token during login in auth_users.js, then verify it for protected routes in index.js.
 
-router.post("/login", function (req, res) {
+router.post("/customer/login", function (req, res) {
   const username = req.body.username;
   const password = req.body.password;
 
