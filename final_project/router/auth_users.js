@@ -29,6 +29,7 @@ const authenticatedUser = (username,password)=>{ //returns boolean
 };
     
 // Middleware to authenticate requests to "/customer/login" endpoint
+
 app.use("/customer/auth/*", function auth(req, res, next) {
   if (!req.session.authorization) {
     return res.status(403).json({
@@ -51,6 +52,10 @@ app.use("/customer/auth/*", function auth(req, res, next) {
 });
 
 //only registered users can login
+//the flow is:
+
+//1.auth_users.js creates the JWT during login.The token is saved in the session.
+//2.index.js retrieves and verifies that token for protected routes
 router.post("/login", function (req, res) {
   const username = req.body.username;
   const password = req.body.password;
