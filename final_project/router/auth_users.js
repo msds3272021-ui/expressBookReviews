@@ -28,13 +28,24 @@ const authenticatedUser = (username,password)=>{ //returns boolean
   return validusers.length > 0;
 };
     
-
-
 //only registered users can login
 //the flow is:
 
 //1.auth_users.js creates the JWT during login.The token is saved in the session.
 //2.index.js retrieves and verifies that token for protected routes
+
+//theere are two JWT statements belong in different files:
+
+//1. jwt.sign() — in router/auth_users.js. Add it inside the login route, after confirming that the username and password are valid. The lab’s login endpoint is:
+// /customer/login
+
+//2. jwt.verify() — in index.js. Add it inside the authentication middleware provided in index.js: index.js already imports JWT in the lab structure: const jwt = require("jsonwebtoken");
+
+//he secret must match in both files:
+//jwt.sign(payload, "access");   -  in router/auth_users.js
+//jwt.verify(token, "access", callback);  - in index.js
+//So, create the token during login in auth_users.js, then verify it for protected routes in index.js.
+
 router.post("/login", function (req, res) {
   const username = req.body.username;
   const password = req.body.password;
