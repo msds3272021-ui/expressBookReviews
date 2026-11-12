@@ -84,7 +84,7 @@ router.post("/login", function (req, res) {
 //The same user updating the same ISBN modifies their existing review.
 //A different user reviewing the same ISBN gets a separate review.
 //The username is taken from the authenticated user, rather than trusting a username sent in the request body.
-//     constant username= req.user.username,  instead of req.user.body
+//     constant username= req.user.username (set by JWT authentication middleware),  instead of req.user.body. (which allows users to impersonate another user)
 
 regd_users.put("/auth/review/:isbn", (req, res) => {
   const isbn = req.params.isbn;
