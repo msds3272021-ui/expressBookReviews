@@ -114,6 +114,9 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
   res.send("New review has been added");
 });
 
+// Same comment as put option: Use req.user.username, which was set by the JWT authentication middleware.
+// Do not accept username from req.body; that could allow users to impersonate another user.
+
 regd_users.delete("/auth/review/:isbn", (req, res) => {
   const isbn = req.params.isbn;
   const username = req.user.username;
