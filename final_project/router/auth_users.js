@@ -6,28 +6,20 @@ const regd_users = express.Router();
 let users = [];
 
 //write code to check is the username is valid
+// Check whether a username already exists
 const isValid = (username) => {
-  const usersWithSameName = users.filter((user) => {
-    return user.username === username;
-  });
-
-  return usersWithSameName.length > 0;
+  return users.some((user) => user.username === username);
 };
 
-if (isValid(username)) {
-  return res.status(409).json({
-    message: "Username already exists"
-  });
-}
-
-const authenticatedUser = (username,password)=>{ //returns boolean
-//write code to check if username and password match the one we have in records.
-  let validusers = users.filter((user) => {
-    return user.username === username && user.password === password;
-  });
-  return validusers.length > 0;
+// Check whether username and password match
+const authenticatedUser = (username, password) => {
+  return users.some(
+    (user) =>
+      user.username === username &&
+      user.password === password
+  );
 };
-    
+   
 //only registered users can login
 //the flow is:
 
